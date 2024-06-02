@@ -1,0 +1,22 @@
+server:
+  port: 2164
+  forward-headers-strategy: framework
+  servlet:
+    context-path: /
+  undertow:
+    accesslog:
+      prefix: "[DEMO-CONTA]"
+  error:
+    include-message: always
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/financeiro
+    username: postgres
+    password: Postgres2022!
+
+  security:
+    user:
+        name: zedascouve
+        password: 123@
