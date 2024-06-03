@@ -1,12 +1,10 @@
 package com.example.demoConta.service;
 
 import com.example.demoConta.domain.conta.interfaces.repository.IContaRepository;
-import com.example.demoConta.domain.conta.interfaces.service.IContaService;
 import com.example.demoConta.domain.conta.model.entidade.Conta;
 import com.example.demoConta.domain.conta.service.ContaService;
 import com.example.demoConta.infra.adapters.security.util.Util;
-import com.example.demoConta.testUtil.utils.TestUtils;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -19,20 +17,24 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 
 /**
  * @author Dionízio Inácio on 02/06/2024
  */
+@AutoConfigureMockMvc
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@WebAppConfiguration
+@Transactional
 public class ContaServiceTest {
 
 	@InjectMocks
@@ -41,19 +43,28 @@ public class ContaServiceTest {
 	@Mock
 	private IContaRepository contaRepository;
 
+	private Conta conta;
+
 	public ContaServiceTest() {
 		MockitoAnnotations.openMocks(this);
 	}
 
-	@Before
-	public void init() {
-		TestUtils.mockSecurityContextHolder();
+	@BeforeEach
+	public void setUp() {
+		MockitoAnnotations.openMocks(this);
+		conta = new Conta();
+		conta.setId(1L);
+		conta.setDataVencimento(LocalDate.now().plusDays(30));
+		conta.setDataPagamento(null);
+		conta.setValor(100.0);
+		conta.setDescricao("Conta de teste");
+		conta.setSituacao("Pendente");
 	}
 
 	private Conta getContaCreditoDefault() {
 		return Conta.builder()
-			.dataPagamento(LocalDate.of(2024, 6, 3))
-			.dataVencimento(LocalDate.of(2024, 6, 3))
+			.dataPagamento(Util.getDataAtual().toLocalDate())
+			.dataVencimento(Util.getDataAtual().toLocalDate())
 			.valor(100.00)
 			.descricao("VENDA SHAMPOO")
 			.situacao("A VISTA")
@@ -62,8 +73,8 @@ public class ContaServiceTest {
 
 	private Conta getContaCredito2Default() {
 		return Conta.builder()
-			.dataPagamento(LocalDate.of(2024, 6, 3))
-			.dataVencimento(LocalDate.of(2024, 6, 3))
+			.dataPagamento(Util.getDataAtual().toLocalDate())
+			.dataVencimento(Util.getDataAtual().toLocalDate())
 			.valor(50.00)
 			.descricao("VENDA PERFUME")
 			.situacao("A VISTA")
@@ -71,17 +82,67 @@ public class ContaServiceTest {
 	}
 
 	@Test
-	public void testCadastrarConta() {
-
-		assertNotNull(contaService.cadastrarConta(getContaCreditoDefault()));
-		assertNotNull(contaService.save(getContaCredito2Default()));
-	}
-
-
-	@Test
 	public void testSomarValoresPorPeriodo() {
 
 		assertNotNull( contaRepository.findContasByPeriodo(LocalDate.now(), LocalDate.now()));
 		assertEquals(150.0, contaService.somarValoresPorPeriodo(LocalDate.now(), LocalDate.now()));
 	}
+
+	@Test
+	public void testCadastrarConta() {
+		when(contaRepository.save(getContaCreditoDefault())).thenReturn(conta);
+
+		Conta novaConta = contaService.cadastrarConta(conta);
+
+		assertNotNull(novaConta);
+		assertEquals(conta.getDescricao(), novaConta.getDescricao());
+	}
+
+	@Test
+	public void testAtualizarConta() {
+		when(contaRepository.findById(anyLong())).thenReturn(Optional.of(conta));
+		when(contaRepository.save(getContaCreditoDefault())).thenReturn(conta);
+
+		conta.setDescricao("Conta atualizada");
+		Conta contaAtualizada = contaService.atualizarConta(conta.getId(), conta);
+
+		assertNotNull(contaAtualizada);
+		assertEquals("Conta atualizada", contaAtualizada.getDescricao());
+	}
+
+	@Test
+	public void testAlterarSituacaoConta() {
+		when(contaRepository.findById(anyLong())).thenReturn(Optional.of(conta));
+		when(contaRepository.save(getContaCredito2Default())).thenReturn(conta);
+
+		Conta contaAlterada = contaService.alterarSituacao(conta.getId(), "Paga");
+
+		assertNotNull(contaAlterada);
+		assertEquals("Paga", contaAlterada.getSituacao());
+	}
+
+	@Test
+	public void testObterListaContasAPagarComFiltro() {
+		List<Conta> contas = new ArrayList<>();
+		contas.add(conta);
+
+		when(contaRepository.findByDataVencimentoBetweenAndDescricaoContaining(eq(LocalDate.now()), eq(LocalDate.now().plusDays(30)), any(String.class)))
+			.thenReturn(contas);
+
+		List<Conta> contasFiltradas = contaService.obterContasAPagar(LocalDate.now(), LocalDate.now().plusDays(30), "Conta");
+
+		assertNotNull(contasFiltradas);
+		assertEquals(1, contasFiltradas.size());
+	}
+
+	@Test
+	public void testObterContaPorId() {
+		when(contaRepository.findById(anyLong())).thenReturn(Optional.of(conta));
+
+		Conta contaEncontrada = contaService.obterContaPorId(conta.getId());
+
+		assertNotNull(contaEncontrada);
+		assertEquals(conta.getId(), contaEncontrada.getId());
+	}
+
 }
