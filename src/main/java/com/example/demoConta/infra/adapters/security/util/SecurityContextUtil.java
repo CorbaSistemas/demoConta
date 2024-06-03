@@ -20,7 +20,7 @@ public class SecurityContextUtil {
 
     @SuppressWarnings("unchecked")
     public static void setSecurityContext(@NotNull final Claims claims, final String token) {
-        log.info("{} Definindo contexto de segurança do usuário [{}]", Util.LOG_PREFIX, claims.getSubject());
+        log.info("{} Definindo contexto de segurança do usuário [{}]", Utils.LOG_PREFIX, claims.getSubject());
         try {
 
             final List<String> authorities = (List<String>) claims.get("authorities");
@@ -46,7 +46,7 @@ public class SecurityContextUtil {
             SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
         } catch (final Exception e) {
-            log.error("{} Erro ao definir contexto de segurança", Util.LOG_PREFIX, e);
+            log.error("{} Erro ao definir contexto de segurança", Utils.LOG_PREFIX, e);
             SecurityContextHolder.clearContext();
         }
     }

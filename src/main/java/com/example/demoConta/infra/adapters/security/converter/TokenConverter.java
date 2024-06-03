@@ -1,7 +1,7 @@
 package com.example.demoConta.infra.adapters.security.converter;
 
 import com.example.demoConta.infra.adapters.security.converter.prop.JwtConfiguration;
-import com.example.demoConta.infra.adapters.security.util.Util;
+import com.example.demoConta.infra.adapters.security.util.Utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class TokenConverter {
             Jwts.parser().setSigningKey(jwtConfiguration.getPrivateKey()).parseClaimsJws(token);
             return true;
         } catch (final Exception e) {
-            log.error("{} Token inválido! TOKEN: {}, Erro: {}", Util.LOG_PREFIX, token, e.getMessage());
+            log.error("{} Token inválido! TOKEN: {}, Erro: {}", Utils.LOG_PREFIX, token, e.getMessage());
             return false;
         }
     }

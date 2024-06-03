@@ -1,6 +1,6 @@
 package com.example.demoConta.domain.conta.service;
 
-import com.example.demo.infra.configuration.Util;
+import com.example.demoConta.infra.configuration.Util;
 import com.example.demoConta.domain.conta.interfaces.repository.IContaRepository;
 import com.example.demoConta.domain.conta.interfaces.service.IContaService;
 import com.example.demoConta.domain.conta.model.entidade.Conta;

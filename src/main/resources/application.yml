@@ -22,8 +22,8 @@ spring:
 
   security:
     user:
-        name: zedascouve
-        password: 123@
+      name: zedascouve
+      password: 123@
 
   jpa:
     show-sql: true

@@ -3,7 +3,7 @@ package com.example.demoConta.service;
 import com.example.demoConta.domain.conta.interfaces.repository.IContaRepository;
 import com.example.demoConta.domain.conta.model.entidade.Conta;
 import com.example.demoConta.domain.conta.service.ContaService;
-import com.example.demoConta.infra.adapters.security.util.Util;
+import com.example.demoConta.infra.adapters.security.util.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -63,8 +63,8 @@ public class ContaServiceTest {
 
 	private Conta getContaCreditoDefault() {
 		return Conta.builder()
-			.dataPagamento(Util.getDataAtual().toLocalDate())
-			.dataVencimento(Util.getDataAtual().toLocalDate())
+			.dataPagamento(Utils.getDataAtual().toLocalDate())
+			.dataVencimento(Utils.getDataAtual().toLocalDate())
 			.valor(100.00)
 			.descricao("VENDA SHAMPOO")
 			.situacao("A VISTA")
@@ -73,8 +73,8 @@ public class ContaServiceTest {
 
 	private Conta getContaCredito2Default() {
 		return Conta.builder()
-			.dataPagamento(Util.getDataAtual().toLocalDate())
-			.dataVencimento(Util.getDataAtual().toLocalDate())
+			.dataPagamento(Utils.getDataAtual().toLocalDate())
+			.dataVencimento(Utils.getDataAtual().toLocalDate())
 			.valor(50.00)
 			.descricao("VENDA PERFUME")
 			.situacao("A VISTA")

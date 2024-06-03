@@ -26,7 +26,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 @Tag(name = "Contas")
 public interface IContaController {
 
-
 	@GetMapping(produces = APPLICATION_JSON_UTF8_VALUE)
 	ResponseEntity<Page<ContaRequestDTO>> list(
 		@PageableDefault(sort = "nomeContinente", direction = Sort.Direction.DESC) Pageable pageable);

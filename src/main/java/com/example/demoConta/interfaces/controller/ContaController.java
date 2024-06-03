@@ -3,7 +3,7 @@ package com.example.demoConta.interfaces.controller;
 import com.example.demoConta.domain.conta.interfaces.controller.IContaController;
 import com.example.demoConta.domain.conta.interfaces.service.IContaService;
 import com.example.demoConta.domain.conta.model.entidade.Conta;
-import com.example.demoConta.infra.adapters.security.util.Util;
+import com.example.demoConta.infra.adapters.security.util.Utils;
 import com.example.demoConta.interfaces.dto.ContaRequestDTO;
 import com.example.demoConta.interfaces.dto.ContaResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class ContaController implements IContaController {
 	private IContaService service;
 	@Override public ResponseEntity<Page<ContaRequestDTO>> list(Pageable pageable) {
 
-		log.info("{} Listando todos os faturamentos", Util.LOG_PREFIX);
+		log.info("{} Listando todos os faturamentos", Utils.LOG_PREFIX);
 		final Page<ContaRequestDTO> faturamentos = service.findAll(pageable)
 			.map(ContaRequestDTO::parse);
 		return ResponseEntity.ok(faturamentos);
@@ -40,14 +40,14 @@ public class ContaController implements IContaController {
 
 	@Override public ResponseEntity<ContaRequestDTO> getConta(Long id) {
 
-		log.info("{} Buscando Continente", Util.LOG_PREFIX);
+		log.info("{} Buscando Continente", Utils.LOG_PREFIX);
 		return ResponseEntity.ok(ContaRequestDTO.parse(service.getById(id)));
 	}
 
 	@Override public ResponseEntity<Long> postConta(
 		ContaResponseDTO contaResponseDTO) {
 
-		log.info("{} Realizando cadastro do Continente", Util.LOG_PREFIX);
+		log.info("{} Realizando cadastro do Continente", Utils.LOG_PREFIX);
 		return ResponseEntity.ok(service.save(Conta.parse(
 			contaResponseDTO)));
 	}

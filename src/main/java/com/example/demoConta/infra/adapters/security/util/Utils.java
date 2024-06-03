@@ -26,7 +26,7 @@ import java.util.Locale;
 @Service
 @Configuration
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class Util {
+public class Utils {
 
     public static final ZoneId ZONA_ID = ZoneId.of("America/Sao_Paulo");
 
