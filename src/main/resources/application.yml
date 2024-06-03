@@ -9,8 +9,12 @@ server:
   error:
     include-message: always
 
+    spring:
+
+
 spring:
   datasource:
+    platform: postgres
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/financeiro
     username: postgres
@@ -20,3 +24,10 @@ spring:
     user:
         name: zedascouve
         password: 123@
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto=create-drop: drop-and-create
+
+      

@@ -23,6 +23,7 @@ public interface IContaService {
 
 	public double somarValoresPorPeriodo(LocalDate dataInicial, LocalDate dataFinal);
 
+	@Transactional
 	public Conta cadastrarConta(Conta conta);
 
 	public Conta atualizarConta(Long id, Conta contaAtualizada);

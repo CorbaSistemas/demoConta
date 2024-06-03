@@ -1,6 +1,7 @@
 package com.example.demoConta.service;
 
 import com.example.demoConta.domain.conta.interfaces.repository.IContaRepository;
+import com.example.demoConta.domain.conta.interfaces.service.IContaService;
 import com.example.demoConta.domain.conta.model.entidade.Conta;
 import com.example.demoConta.domain.conta.service.ContaService;
 import com.example.demoConta.infra.adapters.security.util.Util;
@@ -28,13 +29,10 @@ import static org.mockito.Mockito.when;
 
 
 /**
- * @author <seu nome> on 02/06/2024
+ * @author Dionízio Inácio on 02/06/2024
  */
-@AutoConfigureMockMvc
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@WebAppConfiguration
-@Transactional
 public class ContaServiceTest {
 
 	@InjectMocks
@@ -54,8 +52,8 @@ public class ContaServiceTest {
 
 	private Conta getContaCreditoDefault() {
 		return Conta.builder()
-			.dataPagamento(Util.getDataAtual().toLocalDate())
-			.dataVencimento(Util.getDataAtual().toLocalDate())
+			.dataPagamento(LocalDate.of(2024, 6, 3))
+			.dataVencimento(LocalDate.of(2024, 6, 3))
 			.valor(100.00)
 			.descricao("VENDA SHAMPOO")
 			.situacao("A VISTA")
@@ -64,8 +62,8 @@ public class ContaServiceTest {
 
 	private Conta getContaCredito2Default() {
 		return Conta.builder()
-			.dataPagamento(Util.getDataAtual().toLocalDate())
-			.dataVencimento(Util.getDataAtual().toLocalDate())
+			.dataPagamento(LocalDate.of(2024, 6, 3))
+			.dataVencimento(LocalDate.of(2024, 6, 3))
 			.valor(50.00)
 			.descricao("VENDA PERFUME")
 			.situacao("A VISTA")
@@ -75,8 +73,8 @@ public class ContaServiceTest {
 	@Test
 	public void testCadastrarConta() {
 
-		assertNotNull(when(contaService.save(getContaCreditoDefault())));
-		assertNotNull(when(contaService.save(getContaCredito2Default())));
+		assertNotNull(contaService.cadastrarConta(getContaCreditoDefault()));
+		assertNotNull(contaService.save(getContaCredito2Default()));
 	}
 
 

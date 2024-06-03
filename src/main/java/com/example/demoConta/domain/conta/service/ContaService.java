@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
@@ -37,6 +38,7 @@ public class ContaService implements IContaService {
 		return contaRepository.findAll(pageable);
 	}
 
+	@Transactional
 	public Long save(final Conta conta) {
 
 		log.info("{} Cadastrando novo registro.", Util.LOG_PREFIX);
@@ -63,6 +65,7 @@ public class ContaService implements IContaService {
 			.sum();
 	}
 
+	@Transactional
 	public Conta cadastrarConta(Conta conta) {
 		return contaRepository.save(conta);
 	}
