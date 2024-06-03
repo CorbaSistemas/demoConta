@@ -62,14 +62,6 @@ public class Util {
         return (Authentication) SecurityContextHolder.getContext().getAuthentication();
     }
 
-
-    /**
-     * Compara a diferença entre duas datas em String e devole os dias
-     *
-     * @param startPeriod
-     * @param endPeriod
-     * @return
-     */
     public static Long diffDatesInDays(final LocalDateTime startPeriod, final LocalDateTime endPeriod) {
         Duration diff = Duration.between(startPeriod, endPeriod);
         return diff.toDays();
