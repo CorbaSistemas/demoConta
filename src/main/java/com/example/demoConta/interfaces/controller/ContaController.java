@@ -1,9 +1,9 @@
 package com.example.demoConta.interfaces.controller;
 
-import com.example.demo.infra.configuration.Util;
 import com.example.demoConta.domain.conta.interfaces.controller.IContaController;
 import com.example.demoConta.domain.conta.interfaces.service.IContaService;
 import com.example.demoConta.domain.conta.model.entidade.Conta;
+import com.example.demoConta.infra.adapters.security.util.Util;
 import com.example.demoConta.interfaces.dto.ContaRequestDTO;
 import com.example.demoConta.interfaces.dto.ContaResponseDTO;
 import lombok.RequiredArgsConstructor;
