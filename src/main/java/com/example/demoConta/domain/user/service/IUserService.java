@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface IUserService {
 
-	Optional<User> findByUsername(String username);
-	void saveUser(User user);
+	public Optional<User> findByUsername(String username);
+	public User saveUser(User user);
 
 	}

@@ -30,6 +30,6 @@ public class User {
 		@NotEmpty
 		private String password;
 
-		@ElementCollection(fetch = FetchType.EAGER)
-		private Set<String> roles;
+	//	@ElementCollection(fetch = FetchType.EAGER)
+	//	private Set<String> roles;
 }

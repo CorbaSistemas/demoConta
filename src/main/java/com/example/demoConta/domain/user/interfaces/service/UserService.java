@@ -33,9 +33,9 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService implements IUserService {
 
-	private IUserRepository userRepository;
+	private final IUserRepository userRepository;
 
-	private PasswordEncoder passwordEncoder;
+	//private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public Optional<User> findByUsername(String username) {
@@ -43,8 +43,15 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void saveUser(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		userRepository.save(user);
+	@Transactional
+	public User saveUser(User user) {
+	//	user.setPassword(passwordEncoder.encode(user.getPassword()));
+		try{
+			return userRepository.save(user);
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 }

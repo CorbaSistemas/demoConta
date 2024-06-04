@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController implements IUserController {
 
 
-	private IUserService userService;
+	private final IUserService userService;
 
 	@PostMapping("/login")
 	public String login(@RequestParam String username, @RequestParam String password) {
