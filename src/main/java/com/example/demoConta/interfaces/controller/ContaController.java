@@ -3,6 +3,7 @@ package com.example.demoConta.interfaces.controller;
 import com.example.demoConta.domain.conta.interfaces.controller.IContaController;
 import com.example.demoConta.domain.conta.interfaces.service.IContaService;
 import com.example.demoConta.domain.conta.model.entidade.Conta;
+import com.example.demoConta.domain.conta.service.ContaService;
 import com.example.demoConta.infra.adapters.security.util.Utils;
 import com.example.demoConta.interfaces.dto.ContaRequestDTO;
 import com.example.demoConta.interfaces.dto.ContaResponseDTO;
@@ -29,13 +30,13 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ContaController implements IContaController {
 
-	private IContaService service;
+	private final ContaService service;
 	@Override public ResponseEntity<Page<ContaRequestDTO>> list(Pageable pageable) {
 
 		log.info("{} Listando todos os faturamentos", Utils.LOG_PREFIX);
-		final Page<ContaRequestDTO> faturamentos = service.findAll(pageable)
+		final Page<ContaRequestDTO> contas = service.findAll(pageable)
 			.map(ContaRequestDTO::parse);
-		return ResponseEntity.ok(faturamentos);
+		return ResponseEntity.ok(contas);
 	}
 
 	@Override public ResponseEntity<ContaRequestDTO> getConta(Long id) {

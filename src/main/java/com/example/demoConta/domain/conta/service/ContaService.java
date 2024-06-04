@@ -25,8 +25,9 @@ import java.io.IOException;
 /**
  * @author Dionízio Inácio on 28/05/2024
  */
-@Service
+
 @Slf4j
+@Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ContaService implements IContaService {
 

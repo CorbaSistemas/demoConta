@@ -46,6 +46,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                     "/v3/api-docs/**",
                     "/swagger-config/**",
                     "/**/webjars/springfox-swagger-ui/**").permitAll()
+            .antMatchers(
+                "/**/api/**").permitAll()
             .anyRequest()
             .authenticated()
             .and()

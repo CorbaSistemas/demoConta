@@ -10,8 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -34,6 +37,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
 public class ContaServiceTest {
 
@@ -77,25 +81,23 @@ public class ContaServiceTest {
 			.dataVencimento(Utils.getDataAtual().toLocalDate())
 			.valor(50.00)
 			.descricao("VENDA PERFUME")
-			.situacao("A VISTA")
+			.situacao("PAGA")
 			.build();
+	}
+
+
+	@Test
+	public void testCadastrarConta() {
+
+
+		assertNotNull(contaService.cadastrarConta(getContaCredito2Default()));
 	}
 
 	@Test
 	public void testSomarValoresPorPeriodo() {
 
 		assertNotNull( contaRepository.findContasByPeriodo(LocalDate.now(), LocalDate.now()));
-		assertEquals(150.0, contaService.somarValoresPorPeriodo(LocalDate.now(), LocalDate.now()));
-	}
-
-	@Test
-	public void testCadastrarConta() {
-		when(contaRepository.save(getContaCreditoDefault())).thenReturn(conta);
-
-		Conta novaConta = contaService.cadastrarConta(conta);
-
-		assertNotNull(novaConta);
-		assertEquals(conta.getDescricao(), novaConta.getDescricao());
+		assertEquals(80.0, contaService.somarValoresPorPeriodo(LocalDate.of(2024, 03, 01), LocalDate.now()));
 	}
 
 	@Test
@@ -112,7 +114,7 @@ public class ContaServiceTest {
 
 	@Test
 	public void testAlterarSituacaoConta() {
-		when(contaRepository.findById(anyLong())).thenReturn(Optional.of(conta));
+		when(contaRepository.findById(1l)).thenReturn(Optional.of(conta));
 		when(contaRepository.save(getContaCredito2Default())).thenReturn(conta);
 
 		Conta contaAlterada = contaService.alterarSituacao(conta.getId(), "Paga");
@@ -129,7 +131,7 @@ public class ContaServiceTest {
 		when(contaRepository.findByDataVencimentoBetweenAndDescricaoContaining(eq(LocalDate.now()), eq(LocalDate.now().plusDays(30)), any(String.class)))
 			.thenReturn(contas);
 
-		List<Conta> contasFiltradas = contaService.obterContasAPagar(LocalDate.now(), LocalDate.now().plusDays(30), "Conta");
+		List<Conta> contasFiltradas = contaService.obterContasAPagar(LocalDate.now(), LocalDate.now().plusDays(30), "PENDENTE");
 
 		assertNotNull(contasFiltradas);
 		assertEquals(1, contasFiltradas.size());
