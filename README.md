@@ -43,3 +43,8 @@ O projeto está estruturado de acordo com os princípios de DDD, da seguinte for
 
 O projeto utiliza Docker-Compose para configurar e iniciar o banco de dados PostgreSQL.
 
+## Configuração do Swagger
+
+O projeto utiliza Swagger para operações como GET,POST, PUT entre outros.
+O link é http://localhost:2164/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/
+
